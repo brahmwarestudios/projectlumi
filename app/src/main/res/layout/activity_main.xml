@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- AR Camera View -->
+    <io.github.sceneview.ar.ARSceneView
+        android:id="@+id/arSceneView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Gown overlay sits between AR view and pose skeleton -->
+    <com.brahmware.lumi_alpha.GownOverlayView
+        android:id="@+id/gownOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Pose detection overlay -->
+    <com.brahmware.lumi_alpha.PoseOverlayView
+        android:id="@+id/poseOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:background="#88000000"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="Point camera at yourself"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+</FrameLayout>
