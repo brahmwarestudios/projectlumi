@@ -1,32 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- AR Camera View -->
-    <io.github.sceneview.ar.ARSceneView
-        android:id="@+id/arSceneView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <!-- Gown overlay sits between AR view and pose skeleton -->
-    <com.brahmware.lumi_alpha.GownOverlayView
-        android:id="@+id/gownOverlay"
+        <io.github.sceneview.ar.ARSceneView
+            android:id="@+id/arSceneView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.brahmware.lumi_alpha.GownOverlayView
+            android:id="@+id/gownOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.brahmware.lumi_alpha.PoseOverlayView
+            android:id="@+id/poseOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/status_pill_background"
+            android:drawablePadding="6dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="Point camera at yourself"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/toggleSkeletonButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="180dp"
+            android:contentDescription="Toggle Skeleton"
+            android:src="@android:drawable/ic_menu_view"
+            app:backgroundTint="#7C3AED"
+            app:tint="#FFFFFF" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/openSelectorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:text="Select Gown"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#7C3AED"
+            app:cornerRadius="24dp"
+            app:icon="@android:drawable/ic_menu_gallery"
+            app:iconTint="#FFFFFF" />
+
+    </FrameLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <!-- Pose detection overlay -->
-    <com.brahmware.lumi_alpha.PoseOverlayView
-        android:id="@+id/poseOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/gownBottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_sheet_background"
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            
+            <View
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:background="#44FFFFFF"
+                android:backgroundTint="#7C3AED" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="12dp"
+                android:text="Choose Your Gown"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/gownSelectorLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingBottom="16dp" />
+
+            </ScrollView>
+            
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--
     <TextView
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="32dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="16dp"
         android:background="#88000000"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
@@ -34,4 +134,51 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/toggleSkeletonButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="180dp"
+        android:text="Hide Skeleton"
+        android:textSize="12sp"
+        android:backgroundTint="#88000000"
+        android:textColor="#FFFFFF" />
+
+    <LinearLayout
+        android:id="@+id/selectorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#CC000000"
+        android:orientation="vertical"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="4dp"
+            android:text="select Gown"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/gownSelectorLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp" />
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+    -->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

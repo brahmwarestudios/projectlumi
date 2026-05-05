@@ -1,0 +1,17 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/lumiSplash" />
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/lumi_logo" />
+    </item>
+
+    <item android:bottom="50dp">
+        <bitmap
+            android:gravity="bottom"
+            android:src="@mipmap/brahmware_logo" />
+    </item>
+
+</layer-list>

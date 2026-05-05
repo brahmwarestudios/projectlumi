@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- <color name="lumiBackground">#F5F5F5</color> -->
+    <color name="lumiPrimary">#7C3AED</color>
+    <color name="lumiOnPrimary">#FFFFFF</color>
+    <color name="lumiSecondary">#C084FC</color>
+    <color name="lumiOnSecondary">#1A0533</color>
+    <color name="lumiTertiary">#F0ABFC</color>
+    <color name="lumiSurface">#1A0533</color>
+    <color name="lumiOnSurface">#FFFFFF</color>
+    <color name="lumiBackground">#0F0020</color>
+    <color name="lumiSplash">#F5F5F5</color>
 </resources>

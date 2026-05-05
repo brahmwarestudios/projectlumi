@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,6 +19,13 @@ import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions
 import io.github.sceneview.ar.ARSceneView
 // import io.github.sceneview.node.ModelNode
 // import io.github.sceneview.math.Position
+import android.widget.LinearLayout
+import android.view.View
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.button.MaterialButton
+import android.widget.TextView
+import android.view.animation.AnimationUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,12 +34,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var poseOverlay: PoseOverlayView
     private lateinit var poseDetector: PoseDetector
     private lateinit var gownOverlay: GownOverlayView
+    private lateinit var gownSelector: GownSelector
 
     private var isProcessingFrame = false
     private var frameCount = 0
     // private var gownNode: ModelNode? = null
     // private var isGownLoaded = false
     // private var gownAnchor: Anchor? = null
+    private var isSkeletonVisible = true
+    private var lastStatusText = ""
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
@@ -59,6 +68,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestCameraPermission()
         }
+
+        setupUI()
+        showDisclaimerDialog()
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -87,12 +99,12 @@ class MainActivity : AppCompatActivity() {
         ) {
             initAR()
         } else {
-            statusText.text = "Camera permission is required for AR."
+            updateStatus("Camera permission is required.")
         }
     }
 
     private fun initAR() {
-        statusText.text = "Initializing AR..."
+        updateStatus("Initializing AR...")
 
         arSceneView.apply {
             onSessionCreated = { session ->
@@ -104,14 +116,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 )
                 runOnUiThread {
-                    statusText.text = "Point camera at yourself"
+                    updateStatus("Point camera at yourself")
                 }
                 // loadGownModel()
             }
 
             onSessionFailed = { exception ->
                 runOnUiThread {
-                    statusText.text = "AR failed: ${exception.message}"
+                    updateStatus("AR failed: ${exception.message}")
                 }
             }
 
@@ -122,46 +134,120 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /* private fun loadGownModel() {
-        Log.d(TAG, "Attempting to load gown model...")
+    private fun showDisclaimerDialog() {
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle("Project Lumi — Alpha")
+            .setMessage(
+                "This app is a prototype project currently in development.\n\n" +
+                        "Features and visuals are subject to change and may not reflect " +
+                        "the final intended experience.\n\n" +
+                        "Thank you for testing Project Lumi!"
+            )
+            .setPositiveButton("Got it") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .create()
 
-        val loader = arSceneView.modelLoader
-        if (loader == null) {
-            Log.e(TAG, "Model loader is NULL — cannot load model")
-            runOnUiThread { statusText.text = "Model loader unavailable" }
-            return
+        dialog.show()
+
+        // Set title color after dialog is shown
+        val titleId = resources.getIdentifier("alertTitle", "id", "android")
+        val titleView = dialog.findViewById<TextView>(titleId)
+        titleView?.setTextColor(android.graphics.Color.parseColor("#7C3AED"))
+    }
+
+    private fun updateStatus(message: String, isDetected: Boolean = false) {
+        if (message == lastStatusText) return // avoid redundant updates
+        lastStatusText = message
+
+        runOnUiThread {
+            // Fade out
+            val fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out_down)
+            statusText.startAnimation(fadeOut)
+
+            fadeOut.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
+                override fun onAnimationStart(animation: android.view.animation.Animation?) {}
+                override fun onAnimationRepeat(animation: android.view.animation.Animation?) {}
+                override fun onAnimationEnd(animation: android.view.animation.Animation?) {
+                    statusText.text = message
+
+                    // Change pill color based on state
+                    val bgDrawable = statusText.background as? android.graphics.drawable.GradientDrawable
+                    if (isDetected) {
+                        statusText.setBackgroundResource(R.drawable.status_pill_detected)
+                    } else {
+                        statusText.setBackgroundResource(R.drawable.status_pill_background)
+                    }
+
+                    // Fade in with new text
+                    val fadeIn = AnimationUtils.loadAnimation(this@MainActivity, R.anim.fade_in_up)
+                    statusText.startAnimation(fadeIn)
+                }
+            })
+        }
+    }
+
+    private fun setupUI() {
+        // Setup bottom sheet
+        val bottomSheet = findViewById<LinearLayout>(R.id.gownBottomSheet)
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        // Open selector button
+        val openButton = findViewById<MaterialButton>(R.id.openSelectorButton)
+        openButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        Log.d(TAG, "Model loader available, loading file...")
+        // Setup gown selector
+        // Setup gown selector
+        val container = findViewById<LinearLayout>(R.id.gownSelectorLayout)
 
-        loader.loadModelAsync(
-            fileLocation = "lumi_gown_1.glb",
-            onResult = { modelInstance ->
-                Log.d(TAG, "Load result received. Instance is null: ${modelInstance == null}")
-                if (modelInstance != null) {
-                    Log.d(TAG, "Creating ModelNode...")
-                    gownNode = ModelNode(
-                        modelInstance = modelInstance.instance,
-                        scaleToUnits = 1.8f  // roughly human height in meters
-                    ).also { node ->
-                        node.worldPosition = Position(0f, -0.5f, -1.5f)
-                        // -0.5f on Y moves it slightly downward so it's centered on body
-                        // -1.5f on Z keeps it 1.5 meters in front of camera
-                        node.worldScale = io.github.sceneview.math.Scale(1.8f, 1.8f, 1.8f)
-                        arSceneView.addChildNode(node)
-                        Log.d(TAG, "Node added to scene at position: ${node.worldPosition}")
-                        isGownLoaded = true
-                        runOnUiThread {
-                            statusText.text = "Gown loaded ✓"
-                        }
-                    }
-                } else {
-                    Log.e(TAG, "Model instance is null — file may not be found")
-                    runOnUiThread { statusText.text = "Model instance null" }
-                }
+        val categories = listOf(
+            GownSelector.Category(
+                title = "Gowns",
+                items = listOf(
+                    GownSelector.GownItem(R.drawable.lumi_gown_1, "Gown 1", GownSelector.ItemType.GOWN),
+                    GownSelector.GownItem(R.drawable.lumi_gown_2, "Gown 2", GownSelector.ItemType.GOWN),
+                    GownSelector.GownItem(R.drawable.lumi_gown_3, "Gown 3", GownSelector.ItemType.GOWN)
+                )
+            ),
+            GownSelector.Category(
+                title = "Necklaces",
+                items = listOf(
+                    GownSelector.GownItem(R.drawable.necklace_1, "Necklace 1", GownSelector.ItemType.NECKLACE),
+                    GownSelector.GownItem(R.drawable.necklace_2, "Necklace 2", GownSelector.ItemType.NECKLACE),
+                    GownSelector.GownItem(R.drawable.necklace_3, "Necklace 3", GownSelector.ItemType.NECKLACE)
+                )
+            ),
+            GownSelector.Category(
+                title = "Male Outfits",
+                items = listOf(
+                    GownSelector.GownItem(R.drawable.male_outfit_1, "Male Outfit 1", GownSelector.ItemType.MALE_OUTFIT),
+                    GownSelector.GownItem(R.drawable.male_outfit_2, "Male Outfit 2", GownSelector.ItemType.MALE_OUTFIT),
+                    GownSelector.GownItem(R.drawable.male_outfit_3, "Male Outfit 3", GownSelector.ItemType.MALE_OUTFIT)
+                )
+            )
+        )
+
+        gownSelector = GownSelector(
+            context = this,
+            container = container,
+            categories = categories,
+            onGownSelected = { item ->
+                gownOverlay.setGownResource(item.drawableRes, item.type)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         )
-    } */
+
+        // FAB toggle skeleton
+        val fab = findViewById<FloatingActionButton>(R.id.toggleSkeletonButton)
+        fab.setOnClickListener {
+            isSkeletonVisible = !isSkeletonVisible
+            poseOverlay.visibility = if (isSkeletonVisible) View.VISIBLE else View.GONE
+        }
+    }
 
     private fun processArFrame(frame: Frame) {
         if (isProcessingFrame) return
@@ -204,19 +290,19 @@ class MainActivity : AppCompatActivity() {
                             rightShoulder.inFrameLikelihood > 0.5f
                         ) {
                             runOnUiThread {
-                                statusText.text = "Person detected ✓"
+                                updateStatus("Person detected", isDetected = true)
                                 poseOverlay.updatePose(pose, cameraImage.width, cameraImage.height)
                                 gownOverlay.updatePose(pose, cameraImage.width, cameraImage.height)
                             }
                         } else {
                             runOnUiThread {
-                                statusText.text = "No person detected"
+                                updateStatus("No person detected")
                                 gownOverlay.clearPose()
                             }
                         }
                     } else {
                         runOnUiThread {
-                            statusText.text = "No person detected"
+                            updateStatus("No person detected")
                             gownOverlay.clearPose()
                         }
                     }
