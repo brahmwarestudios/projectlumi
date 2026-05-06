@@ -18,6 +18,7 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
     private var imageHeight: Int = 1
     private var itemBitmap: Bitmap? = null
     private var currentItemType: GownSelector.ItemType = GownSelector.ItemType.GOWN
+    private var isFrontCamera = false
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
@@ -42,6 +43,19 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
         invalidate()
     }
 
+    fun setFrontCamera(isFront: Boolean) {
+        isFrontCamera = isFront
+        invalidate()
+    }
+
+    private fun mirrorX(x: Float, scaleX: Float): Float {
+        return if (isFrontCamera) {
+            width.toFloat() - (x * scaleX)
+        } else {
+            x * scaleX
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val currentPose = pose ?: return
@@ -55,8 +69,8 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
     }
 
     private fun drawGown(canvas: Canvas, pose: Pose, bitmap: Bitmap) {
-        val scaleX = width.toFloat() / imageHeight
-        val scaleY = height.toFloat() / imageWidth
+        val scaleX = width.toFloat() / imageHeight.toFloat()
+        val scaleY = height.toFloat() / imageWidth.toFloat()
 
         val leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
         val rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
@@ -68,9 +82,9 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
         if (leftShoulder.inFrameLikelihood < 0.5f ||
             rightShoulder.inFrameLikelihood < 0.5f) return
 
-        val leftShoulderX = leftShoulder.position.x * scaleX
+        val leftShoulderX = mirrorX(leftShoulder.position.x, scaleX)
         val leftShoulderY = leftShoulder.position.y * scaleY
-        val rightShoulderX = rightShoulder.position.x * scaleX
+        val rightShoulderX = mirrorX(rightShoulder.position.x, scaleX)
         val rightShoulderY = rightShoulder.position.y * scaleY
         val leftHipY = leftHip.position.y * scaleY
         val rightHipY = rightHip.position.y * scaleY
@@ -80,12 +94,12 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
             ((leftHipY + rightHipY) / 2f) - ((leftShoulderY + rightShoulderY) / 2f)
         ) * 3.0f
 
-        val gownTop = (leftShoulderY + rightShoulderY) / 2f - (shoulderWidth * 0.5f)
-        val gownLeft = (leftShoulderX + rightShoulderX) / 2f - (shoulderWidth / 2f)
+        val gownTop = (leftShoulderY + rightShoulderY) / 2f - shoulderWidth * 0.5f
+        val gownLeft = (leftShoulderX + rightShoulderX) / 2f - shoulderWidth / 2f
 
         val matrix = Matrix()
-        val bitmapScaleX = shoulderWidth / bitmap.width
-        val bitmapScaleY = torsoHeight / bitmap.height
+        val bitmapScaleX = shoulderWidth / bitmap.width.toFloat()
+        val bitmapScaleY = torsoHeight / bitmap.height.toFloat()
         matrix.setScale(bitmapScaleX, bitmapScaleY)
         matrix.postTranslate(gownLeft, gownTop)
 
@@ -93,8 +107,8 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
     }
 
     private fun drawNecklace(canvas: Canvas, pose: Pose, bitmap: Bitmap) {
-        val scaleX = width.toFloat() / imageHeight
-        val scaleY = height.toFloat() / imageWidth
+        val scaleX = width.toFloat() / imageHeight.toFloat()
+        val scaleY = height.toFloat() / imageWidth.toFloat()
 
         val leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
         val rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
@@ -104,26 +118,21 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
         if (leftShoulder.inFrameLikelihood < 0.5f ||
             rightShoulder.inFrameLikelihood < 0.5f) return
 
-        val leftShoulderX = leftShoulder.position.x * scaleX
+        val leftShoulderX = mirrorX(leftShoulder.position.x, scaleX)
         val leftShoulderY = leftShoulder.position.y * scaleY
-        val rightShoulderX = rightShoulder.position.x * scaleX
+        val rightShoulderX = mirrorX(rightShoulder.position.x, scaleX)
         val rightShoulderY = rightShoulder.position.y * scaleY
         val noseY = nose.position.y * scaleY
 
-        // Necklace width matches shoulder width
         val necklaceWidth = Math.abs(rightShoulderX - leftShoulderX) * 1.1f
-
-        // Necklace height is the gap between nose and shoulders
         val shoulderMidY = (leftShoulderY + rightShoulderY) / 2f
         val necklaceHeight = (shoulderMidY - noseY) * 0.8f
-
-        // Position necklace between nose and shoulders
-        val necklaceTop = noseY + ((shoulderMidY - noseY) * 0.3f)
-        val necklaceLeft = (leftShoulderX + rightShoulderX) / 2f - (necklaceWidth / 2f)
+        val necklaceTop = noseY + (shoulderMidY - noseY) * 0.3f
+        val necklaceLeft = (leftShoulderX + rightShoulderX) / 2f - necklaceWidth / 2f
 
         val matrix = Matrix()
-        val bitmapScaleX = necklaceWidth / bitmap.width
-        val bitmapScaleY = necklaceHeight / bitmap.height
+        val bitmapScaleX = necklaceWidth / bitmap.width.toFloat()
+        val bitmapScaleY = necklaceHeight / bitmap.height.toFloat()
         matrix.setScale(bitmapScaleX, bitmapScaleY)
         matrix.postTranslate(necklaceLeft, necklaceTop)
 
@@ -131,8 +140,8 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
     }
 
     private fun drawMaleOutfit(canvas: Canvas, pose: Pose, bitmap: Bitmap) {
-        val scaleX = width.toFloat() / imageHeight
-        val scaleY = height.toFloat() / imageWidth
+        val scaleX = width.toFloat() / imageHeight.toFloat()
+        val scaleY = height.toFloat() / imageWidth.toFloat()
 
         val leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
         val rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
@@ -144,28 +153,23 @@ class GownOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
         if (leftShoulder.inFrameLikelihood < 0.5f ||
             rightShoulder.inFrameLikelihood < 0.5f) return
 
-        val leftShoulderX = leftShoulder.position.x * scaleX
+        val leftShoulderX = mirrorX(leftShoulder.position.x, scaleX)
         val leftShoulderY = leftShoulder.position.y * scaleY
-        val rightShoulderX = rightShoulder.position.x * scaleX
+        val rightShoulderX = mirrorX(rightShoulder.position.x, scaleX)
         val rightShoulderY = rightShoulder.position.y * scaleY
         val leftHipY = leftHip.position.y * scaleY
         val rightHipY = rightHip.position.y * scaleY
 
-        // Width covers shoulders with slight padding
         val outfitWidth = Math.abs(rightShoulderX - leftShoulderX) * 1.8f
-
-        // Height only covers shoulder to hip — chest area only
         val shoulderMidY = (leftShoulderY + rightShoulderY) / 2f
         val hipMidY = (leftHipY + rightHipY) / 2f
         val outfitHeight = (hipMidY - shoulderMidY) * 1.2f
-
-        // Start slightly above shoulders
-        val outfitTop = shoulderMidY - (outfitWidth * 0.15f)
-        val outfitLeft = (leftShoulderX + rightShoulderX) / 2f - (outfitWidth / 2f)
+        val outfitTop = shoulderMidY - outfitWidth * 0.15f
+        val outfitLeft = (leftShoulderX + rightShoulderX) / 2f - outfitWidth / 2f
 
         val matrix = Matrix()
-        val bitmapScaleX = outfitWidth / bitmap.width
-        val bitmapScaleY = outfitHeight / bitmap.height
+        val bitmapScaleX = outfitWidth / bitmap.width.toFloat()
+        val bitmapScaleY = outfitHeight / bitmap.height.toFloat()
         matrix.setScale(bitmapScaleX, bitmapScaleY)
         matrix.postTranslate(outfitLeft, outfitTop)
 

@@ -14,6 +14,7 @@ class PoseOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
     private var pose: Pose? = null
     private var imageWidth: Int = 1
     private var imageHeight: Int = 1
+    private var isFrontCamera = false
 
     private val dotPaint = Paint().apply {
         color = Color.YELLOW
@@ -32,6 +33,15 @@ class PoseOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
         this.imageWidth = imageWidth
         this.imageHeight = imageHeight
         invalidate() // triggers redraw
+    }
+
+    fun setFrontCamera(isFront: Boolean) {
+        isFrontCamera = isFront
+        invalidate()
+    }
+
+    private fun mirrorX(x: Float, scaleX: Float): Float {
+        return if (isFrontCamera) width.toFloat() - (x * scaleX) else x * scaleX
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -77,7 +87,7 @@ class PoseOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
         for (landmark in currentPose.allPoseLandmarks) {
             if (landmark.inFrameLikelihood > 0.5f) {
                 canvas.drawCircle(
-                    landmark.position.x * scaleX,
+                    mirrorX(landmark.position.x, scaleX),
                     landmark.position.y * scaleY,
                     10f,
                     dotPaint

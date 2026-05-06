@@ -26,6 +26,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.button.MaterialButton
 import android.widget.TextView
 import android.view.animation.AnimationUtils
+import com.google.ar.core.CameraConfig
+import com.google.ar.core.CameraConfigFilter
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var poseDetector: PoseDetector
     private lateinit var gownOverlay: GownOverlayView
     private lateinit var gownSelector: GownSelector
+    private lateinit var frontCameraPreview: PreviewView
 
     private var isProcessingFrame = false
     private var frameCount = 0
@@ -43,6 +54,13 @@ class MainActivity : AppCompatActivity() {
     // private var gownAnchor: Anchor? = null
     private var isSkeletonVisible = true
     private var lastStatusText = ""
+    private var isFrontCamera = false
+    private var cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+    private var frontCameraProvider: ProcessCameraProvider? = null
+    private var frontFrameCount = 0
+    private var lastDetectedState = false
+    private var stableFrameCount = 0
+    private val requiredStableFrames = 5 // must be consistent for 5 frames before updating
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
@@ -57,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         statusText = findViewById(R.id.statusText)
         poseOverlay = findViewById(R.id.poseOverlay)
         gownOverlay = findViewById(R.id.gownOverlay)
+        frontCameraPreview = findViewById(R.id.frontCameraPreview)
 
         val options = AccuratePoseDetectorOptions.Builder()
             .setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
@@ -70,7 +89,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupUI()
-        showDisclaimerDialog()
+
+        // Load product from intent AFTER setupUI so gownOverlay is ready
+        loadProductFromIntent()
+    }
+
+    private fun loadProductFromIntent() {
+        val product = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("product", Product::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra("product")
+        }
+
+        product?.let {
+            // Give the view a moment to be ready before applying
+            gownOverlay.post {
+                gownOverlay.setGownResource(it.imageRes, it.itemType)
+                updateStatus("Previewing: ${it.name}")
+            }
+        }
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -112,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                     session.config.apply {
                         depthMode = Config.DepthMode.AUTOMATIC
                         planeFindingMode = Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL
-                        lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR // ← add here
+                        lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
                     }
                 )
                 runOnUiThread {
@@ -134,8 +172,160 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun toggleCamera() {
+        isFrontCamera = !isFrontCamera
+
+        if (isFrontCamera) {
+            // Switch to front camera mode
+            arSceneView.visibility = View.GONE
+            frontCameraPreview.visibility = View.VISIBLE
+            startFrontCamera()
+            updateStatus("Front camera active")
+        } else {
+            // Switch back to rear AR camera
+            stopFrontCamera()
+            frontCameraPreview.visibility = View.GONE
+            arSceneView.visibility = View.VISIBLE
+            updateStatus("Rear camera active")
+        }
+
+        if (isFrontCamera) {
+            arSceneView.visibility = View.GONE
+            frontCameraPreview.visibility = View.VISIBLE
+            gownOverlay.setFrontCamera(true)   // ← add this
+            poseOverlay.setFrontCamera(true)   // ← add this
+            startFrontCamera()
+            updateStatus("Front camera active")
+        } else {
+            stopFrontCamera()
+            frontCameraPreview.visibility = View.GONE
+            arSceneView.visibility = View.VISIBLE
+            gownOverlay.setFrontCamera(false)  // ← add this
+            poseOverlay.setFrontCamera(false)  // ← add this
+            updateStatus("Rear camera active")
+        }
+    }
+
+    private fun updateDetectionStatus(isDetected: Boolean) {
+        if (isDetected == lastDetectedState) {
+            stableFrameCount++
+        } else {
+            stableFrameCount = 0
+            lastDetectedState = isDetected
+        }
+
+        // Only update UI after state has been stable for required frames
+        if (stableFrameCount == requiredStableFrames) {
+            if (isDetected) {
+                updateStatus("Person detected ✓", isDetected = true)
+            } else {
+                updateStatus("No person detected")
+            }
+        }
+    }
+
+    private fun startFrontCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            frontCameraProvider = cameraProviderFuture.get()
+
+            val preview = Preview.Builder().build().also {
+                it.setSurfaceProvider(frontCameraPreview.surfaceProvider)
+            }
+
+            val imageAnalysis = ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
+
+            imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
+                processFrontCameraFrame(imageProxy)
+            }
+
+            try {
+                frontCameraProvider?.unbindAll()
+                frontCameraProvider?.bindToLifecycle(
+                    this,
+                    CameraSelector.DEFAULT_FRONT_CAMERA,
+                    preview,
+                    imageAnalysis
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Front camera binding failed: ${e.message}")
+                isFrontCamera = false
+                runOnUiThread {
+                    frontCameraPreview.visibility = View.GONE
+                    arSceneView.visibility = View.VISIBLE
+                    updateStatus("Front camera unavailable")
+                }
+            }
+
+        }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun stopFrontCamera() {
+        frontCameraProvider?.unbindAll()
+        frontCameraProvider = null
+    }
+
+    @androidx.camera.core.ExperimentalGetImage
+    private fun processFrontCameraFrame(imageProxy: ImageProxy) {
+        val mediaImage = imageProxy.image ?: run {
+            imageProxy.close()
+            return
+        }
+
+        frontFrameCount++
+        if (frontFrameCount % 10 != 0) {
+            imageProxy.close()
+            return
+        }
+
+        val inputImage = InputImage.fromMediaImage(
+            mediaImage,
+            270
+        )
+
+        poseDetector.process(inputImage)
+            .addOnSuccessListener { pose ->
+                if (pose.allPoseLandmarks.isNotEmpty()) {
+                    val leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
+                    val rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
+
+                    if (leftShoulder != null && rightShoulder != null &&
+                        leftShoulder.inFrameLikelihood > 0.5f &&
+                        rightShoulder.inFrameLikelihood > 0.5f
+                    ) {
+                        runOnUiThread {
+                            updateDetectionStatus(true)
+                            poseOverlay.updatePose(pose, imageProxy.width, imageProxy.height)
+                            gownOverlay.updatePose(pose, imageProxy.width, imageProxy.height)
+                        }
+                    } else {
+                        runOnUiThread {
+                            updateDetectionStatus(false)
+                            gownOverlay.clearPose()
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        updateStatus("No person detected")
+                        gownOverlay.clearPose()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Front camera pose detection failed: ${e.message}")
+            }
+            .addOnCompleteListener {
+                imageProxy.close()
+            }
+    }
+
+    /*
     private fun showDisclaimerDialog() {
-        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(
+            this, R.style.LumiDialog
+        )
             .setTitle("Project Lumi — Alpha")
             .setMessage(
                 "This app is a prototype project currently in development.\n\n" +
@@ -150,12 +340,8 @@ class MainActivity : AppCompatActivity() {
             .create()
 
         dialog.show()
-
-        // Set title color after dialog is shown
-        val titleId = resources.getIdentifier("alertTitle", "id", "android")
-        val titleView = dialog.findViewById<TextView>(titleId)
-        titleView?.setTextColor(android.graphics.Color.parseColor("#7C3AED"))
     }
+    */
 
     private fun updateStatus(message: String, isDetected: Boolean = false) {
         if (message == lastStatusText) return // avoid redundant updates
@@ -247,6 +433,12 @@ class MainActivity : AppCompatActivity() {
             isSkeletonVisible = !isSkeletonVisible
             poseOverlay.visibility = if (isSkeletonVisible) View.VISIBLE else View.GONE
         }
+
+        // Camera toggle
+        val cameraToggleFab = findViewById<FloatingActionButton>(R.id.toggleCameraButton)
+        cameraToggleFab.setOnClickListener {
+            toggleCamera()
+        }
     }
 
     private fun processArFrame(frame: Frame) {
@@ -290,13 +482,13 @@ class MainActivity : AppCompatActivity() {
                             rightShoulder.inFrameLikelihood > 0.5f
                         ) {
                             runOnUiThread {
-                                updateStatus("Person detected", isDetected = true)
+                                updateDetectionStatus(true)
                                 poseOverlay.updatePose(pose, cameraImage.width, cameraImage.height)
                                 gownOverlay.updatePose(pose, cameraImage.width, cameraImage.height)
                             }
                         } else {
                             runOnUiThread {
-                                updateStatus("No person detected")
+                                updateDetectionStatus(false)
                                 gownOverlay.clearPose()
                             }
                         }
@@ -323,7 +515,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // gownAnchor?.detach()
+        stopFrontCamera()
+        cameraExecutor.shutdown()
         poseDetector.close()
     }
 }

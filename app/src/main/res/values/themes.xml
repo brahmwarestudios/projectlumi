@@ -6,6 +6,12 @@
     </style>
     -->
 
+    <style name="LumiDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:textColorPrimary">#1A0533</item>
+        <item name="android:textColor">#1A0533</item>
+        <item name="colorPrimary">#7C3AED</item>
+    </style>
+
     <style name="Theme.ProjectLumi" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/lumiPrimary</item>
         <item name="colorOnPrimary">@color/lumiOnPrimary</item>

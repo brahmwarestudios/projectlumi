@@ -19,6 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectLumi">
 
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+
         <!-- ARCore Metadata -->
         <meta-data
             android:name="com.google.ar.core"
@@ -27,8 +35,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:launchMode="singleTop" />
 
         <activity
             android:name=".Splash"

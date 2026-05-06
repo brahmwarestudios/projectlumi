@@ -14,6 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <androidx.camera.view.PreviewView
+            android:id="@+id/frontCameraPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
         <com.brahmware.lumi_alpha.GownOverlayView
             android:id="@+id/gownOverlay"
             android:layout_width="match_parent"
@@ -39,6 +45,18 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:letterSpacing="0.05" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/toggleCameraButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="280dp"
+            android:contentDescription="Toggle Camera"
+            android:src="@android:drawable/ic_menu_camera"
+            app:backgroundTint="#7C3AED"
+            app:tint="#FFFFFF" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/toggleSkeletonButton"

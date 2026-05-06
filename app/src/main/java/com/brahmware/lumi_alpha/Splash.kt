@@ -11,8 +11,8 @@ class Splash : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this@Splash, MainActivity::class.java))
+            startActivity(Intent(this@Splash, HomeActivity::class.java))
             finish()
-        }, 1000)
+        }, 2000)
     }
 }
