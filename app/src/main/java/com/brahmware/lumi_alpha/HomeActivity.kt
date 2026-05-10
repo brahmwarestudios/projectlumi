@@ -54,19 +54,29 @@ class HomeActivity : AppCompatActivity() {
     private fun setupBottomNavigation() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.selectedItemId = R.id.nav_home
+
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_categories -> true
-                R.id.nav_wishlist -> true
-                R.id.nav_account -> true
+                R.id.nav_home -> true // already here
+                R.id.nav_wishlist -> {
+                    startActivity(Intent(this, WishlistActivity::class.java))
+                    false // keep home selected visually; wishlist is its own screen
+                }
+                R.id.nav_cart -> {
+                    startActivity(Intent(this, CartActivity::class.java))
+                    false
+                }
+                R.id.nav_account -> {
+                    // Placeholder — extend later
+                    true
+                }
                 else -> false
             }
         }
     }
 
     private fun showDisclaimerDialog() {
-        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(
             this, R.style.LumiDialog
         )
             .setTitle("Project Lumi — Alpha")
@@ -76,12 +86,9 @@ class HomeActivity : AppCompatActivity() {
                         "the final intended experience.\n\n" +
                         "Thank you for testing Project Lumi!"
             )
-            .setPositiveButton("Got it") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setPositiveButton("Got it") { dialog, _ -> dialog.dismiss() }
             .setCancelable(false)
             .create()
-
-        dialog.show()
+            .show()
     }
 }

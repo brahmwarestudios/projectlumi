@@ -9,7 +9,11 @@ data class Product(
     val name: String,
     val brand: String,
     val description: String,
-    val price: String,
+    val rentalPricePerDay: Int,   // in Philippine Peso
     val imageRes: Int,
-    val itemType: GownSelector.ItemType
-) : Parcelable
+    val itemType: GownSelector.ItemType,
+    val availableSizes: List<String> = listOf("XS", "S", "M", "L", "XL"),
+    val isAvailable: Boolean = true
+) : Parcelable {
+    val formattedPrice: String get() = "₱${"%,d".format(rentalPricePerDay)}/day"
+}
