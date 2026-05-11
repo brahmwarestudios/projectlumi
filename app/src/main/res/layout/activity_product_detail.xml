@@ -4,185 +4,256 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lumiBackground">
+    android:background="@color/lumi_background">
+
+    <!-- Top bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="12dp"
+                app:srcCompat="@drawable/ic_back"
+                app:fabSize="mini"
+                app:backgroundTint="@color/lumi_surface_variant"
+                app:tint="@color/lumi_on_surface" />
+
+            <!-- Cart icon top-right -->
+            <ImageButton
+                android:id="@+id/cartIconButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cart"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/lumi_on_surface"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="12dp" />
+
+            <!-- Wishlist heart -->
+            <ImageButton
+                android:id="@+id/wishlistButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_heart_outline"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/lumi_primary"
+                app:layout_constraintEnd_toStartOf="@id/cartIconButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="4dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="100dp"
-        android:clipToPadding="false">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Product Image -->
-            <FrameLayout
+            <!-- Hero image -->
+            <ImageView
+                android:id="@+id/productDetailImage"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
-                android:background="@drawable/hero_banner_background">
+                android:layout_height="380dp"
+                android:scaleType="centerCrop" />
 
-                <ImageView
-                    android:id="@+id/productDetailImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:padding="24dp" />
-
-                <!-- Back button -->
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/backButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:src="@android:drawable/ic_media_previous"
-                    android:contentDescription="Back"
-                    app:backgroundTint="#881A0533"
-                    app:tint="#FFFFFF"
-                    app:fabSize="mini" />
-
-            </FrameLayout>
-
-            <!-- Product Info -->
-            <LinearLayout
+            <!-- Info card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <!-- Brand -->
-                <TextView
-                    android:id="@+id/productDetailBrand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/lumiSecondary"
-                    android:textSize="13sp"
-                    android:letterSpacing="0.1" />
-
-                <!-- Name -->
-                <TextView
-                    android:id="@+id/productDetailName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="4dp" />
-
-                <!-- Price -->
-                <TextView
-                    android:id="@+id/productDetailPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/lumiTertiary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp" />
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#222244"
-                    android:layout_marginVertical="16dp" />
-
-                <!-- Description Label -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description"
-                    android:textColor="@color/lumiSecondary"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.1" />
-
-                <!-- Description -->
-                <TextView
-                    android:id="@+id/productDetailDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="14sp"
-                    android:lineSpacingMultiplier="1.5"
-                    android:layout_marginTop="8dp" />
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#222244"
-                    android:layout_marginVertical="16dp" />
-
-                <!-- Quantity -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quantity"
-                    android:textColor="@color/lumiSecondary"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                android:layout_marginTop="-24dp"
+                android:layout_marginHorizontal="0dp"
+                app:cardBackgroundColor="@color/lumi_surface"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/decreaseQty"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:text="-"
-                        android:textSize="18sp"
-                        android:padding="0dp"
-                        app:backgroundTint="#2D1052"
-                        app:cornerRadius="8dp" />
+                    <!-- Name + availability row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="4dp">
+
+                        <TextView
+                            android:id="@+id/productDetailName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="22sp"
+                            android:textColor="@color/lumi_on_surface" />
+
+                        <TextView
+                            android:id="@+id/availabilityBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:textSize="11sp"
+                            android:textColor="@android:color/white" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/quantityText"
-                        android:layout_width="48dp"
+                        android:id="@+id/productDetailBrand"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:gravity="center" />
+                        android:textSize="12sp"
+                        android:letterSpacing="0.12"
+                        android:textColor="@color/lumi_on_surface_variant"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Price per day -->
+                    <TextView
+                        android:id="@+id/productDetailPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@color/lumi_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lumi_surface_variant"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Description -->
+                    <TextView
+                        android:id="@+id/productDetailDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="4dp"
+                        android:textColor="@color/lumi_on_surface_variant"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Size picker -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Size"
+                        android:textSize="13sp"
+                        android:textColor="@color/lumi_on_surface"
+                        android:layout_marginBottom="6dp" />
+
+                    <Spinner
+                        android:id="@+id/sizePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/spinner_background" />
+
+                    <!-- Date selection -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rental Dates"
+                        android:textSize="13sp"
+                        android:textColor="@color/lumi_on_surface"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/pickupDateButton"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Pick-up Date"
+                            android:textSize="12sp"
+                            app:cornerRadius="12dp"
+                            android:layout_marginEnd="6dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/returnDateButton"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Return Date"
+                            android:textSize="12sp"
+                            app:cornerRadius="12dp"
+                            android:layout_marginStart="6dp" />
+
+                    </LinearLayout>
+
+                    <!-- Live rental cost summary -->
+                    <TextView
+                        android:id="@+id/rentalSummaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="@color/lumi_primary"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Action buttons -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/rentNowButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Rent Now"
+                        android:textSize="15sp"
+                        app:backgroundTint="@color/lumi_primary"
+                        android:textColor="@color/lumi_on_primary"
+                        app:cornerRadius="26dp"
+                        android:layout_marginBottom="10dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/increaseQty"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:text="+"
-                        android:textSize="18sp"
-                        android:padding="0dp"
-                        app:backgroundTint="#7C3AED"
-                        app:cornerRadius="8dp" />
+                        android:id="@+id/addToCartButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Add to Cart"
+                        android:textSize="15sp"
+                        app:cornerRadius="26dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/previewButton"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Try On (AR Preview)"
+                        android:textSize="13sp"
+                        app:cornerRadius="26dp" />
 
                 </LinearLayout>
-
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Preview Button pinned at bottom -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/previewButton"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        android:text="✨ Preview Product"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="#7C3AED"
-        app:cornerRadius="28dp"
-        app:icon="@android:drawable/ic_menu_camera"
-        app:iconTint="#FFFFFF"
-        app:iconGravity="textStart" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -32,7 +32,7 @@ class ProductAdapter(
         holder.image.setImageResource(product.imageRes)
         holder.name.text = product.name
         holder.brand.text = product.brand
-        holder.price.text = product.price
+        holder.price.text = product.formattedPrice
         holder.card.setOnClickListener { onProductClick(product) }
     }
 
