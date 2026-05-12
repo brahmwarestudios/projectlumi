@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardBackgroundColor="#2D1052"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:strokeColor="#447C3AED"
-    app:strokeWidth="1dp">
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,45 +18,61 @@
         <ImageView
             android:id="@+id/productImage"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true" />
+            android:layout_height="220dp"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="12dp">
 
             <TextView
                 android:id="@+id/productName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:textSize="14sp"
+                android:fontFamily="@font/cormorant_garamond"
                 android:textStyle="bold"
+                android:textColor="#2C1810"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:layout_marginBottom="4dp" />
 
-            <TextView
-                android:id="@+id/productBrand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#C084FC"
-                android:textSize="12sp"
-                android:layout_marginTop="2dp" />
-
+            <!-- "Rent: ₱450/day" -->
             <TextView
                 android:id="@+id/productPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="12sp"
+                android:textColor="#7A6652"
+                android:layout_marginBottom="2dp" />
+
+            <!-- "Buy: ₱12,000" -->
+            <TextView
+                android:id="@+id/productBrand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:fontFamily="@font/cormorant_garamond"
                 android:textStyle="bold"
-                android:layout_marginTop="6dp" />
+                android:textColor="#2C1810"
+                android:layout_marginBottom="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewDetailsButton"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:text="VIEW DETAILS"
+                android:textSize="11sp"
+                android:letterSpacing="0.08"
+                app:backgroundTint="#7A6652"
+                android:textColor="#FFFFFF"
+                app:cornerRadius="6dp" />
 
         </LinearLayout>
-
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

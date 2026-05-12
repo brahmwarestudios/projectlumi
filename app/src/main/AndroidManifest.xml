@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Internet Permission -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <!-- Camera Permission -->
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -47,6 +50,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CartActivity" android:exported="false" />
+        <activity android:name=".WishlistActivity" android:exported="false" />
+        <activity android:name=".CheckoutActivity" android:exported="false" />
+        <activity android:name=".OrderConfirmationActivity" android:exported="false" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".RulesActivity" />
+
+
 
     </application>
 

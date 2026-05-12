@@ -2,11 +2,11 @@ package com.brahmware.lumi_alpha
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.chip.ChipGroup
 
 class HomeActivity : AppCompatActivity() {
 
@@ -18,14 +18,16 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         setupRecyclerView()
-        setupCategoryChips()
+        setupCollectionTiles()
         setupBottomNavigation()
+        setupSearch()
         showDisclaimerDialog()
     }
 
     private fun setupRecyclerView() {
         recyclerView = findViewById(R.id.productsRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.isNestedScrollingEnabled = false
 
         adapter = ProductAdapter(ProductRepository.getAll()) { product ->
             val intent = Intent(this, ProductDetailActivity::class.java)
@@ -35,19 +37,21 @@ class HomeActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun setupCategoryChips() {
-        val chipGroup = findViewById<ChipGroup>(R.id.categoryChipGroup)
-        chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
-            val filtered = when {
-                checkedIds.contains(R.id.chipGowns) ->
-                    ProductRepository.getByCategory(GownSelector.ItemType.GOWN)
-                checkedIds.contains(R.id.chipNecklaces) ->
-                    ProductRepository.getByCategory(GownSelector.ItemType.NECKLACE)
-                checkedIds.contains(R.id.chipMale) ->
-                    ProductRepository.getByCategory(GownSelector.ItemType.MALE_OUTFIT)
-                else -> ProductRepository.getAll()
-            }
-            adapter.updateProducts(filtered)
+    private fun setupCollectionTiles() {
+        findViewById<View>(R.id.collectionGowns).setOnClickListener {
+            adapter.updateProducts(ProductRepository.getByCategory(GownSelector.ItemType.GOWN))
+        }
+        findViewById<View>(R.id.collectionSuits).setOnClickListener {
+            adapter.updateProducts(ProductRepository.getByCategory(GownSelector.ItemType.MALE_OUTFIT))
+        }
+        findViewById<View>(R.id.collectionAccessories).setOnClickListener {
+            adapter.updateProducts(ProductRepository.getByCategory(GownSelector.ItemType.NECKLACE))
+        }
+    }
+
+    private fun setupSearch() {
+        findViewById<View>(R.id.searchButton).setOnClickListener {
+            // Wire up SearchActivity in a future step
         }
     }
 
@@ -56,32 +60,21 @@ class HomeActivity : AppCompatActivity() {
         bottomNav.selectedItemId = R.id.nav_home
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_categories -> true
-                R.id.nav_wishlist -> true
-                R.id.nav_account -> true
+                R.id.nav_home    -> true
+                R.id.nav_cart    -> { startActivity(Intent(this, CartActivity::class.java)); false }
+                R.id.nav_account -> { startActivity(Intent(this, AccountActivity::class.java)); false }
                 else -> false
             }
         }
     }
 
     private fun showDisclaimerDialog() {
-        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(
-            this, R.style.LumiDialog
-        )
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle("Project Lumi — Alpha")
-            .setMessage(
-                "This app is a prototype project currently in development.\n\n" +
-                        "Features and visuals are subject to change and may not reflect " +
-                        "the final intended experience.\n\n" +
-                        "Thank you for testing Project Lumi!"
-            )
-            .setPositiveButton("Got it") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setMessage("This app is a prototype currently in development.\n\nThank you for testing Project Lumi!")
+            .setPositiveButton("Got it") { d, _ -> d.dismiss() }
             .setCancelable(false)
             .create()
-
-        dialog.show()
+            .show()
     }
 }

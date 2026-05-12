@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#F5F0EB">
+
+    <!-- Divider top -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0D5C8" />
+
+    <!-- Question row (tappable) -->
+    <LinearLayout
+        android:id="@+id/faqQuestionRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/faqQuestion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FAQ Question"
+            android:textSize="14sp"
+            android:fontFamily="@font/cormorant_garamond"
+            android:textColor="#2C1810" />
+
+        <ImageView
+            android:id="@+id/faqChevron"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_chevron_down"
+            android:tint="#7A6652" />
+
+    </LinearLayout>
+
+    <!-- Answer (collapsed by default) -->
+    <TextView
+        android:id="@+id/faqAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer text"
+        android:textSize="13sp"
+        android:textColor="#7A6652"
+        android:lineSpacingExtra="3dp"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="16dp"
+        android:visibility="gone" />
+
+</LinearLayout>

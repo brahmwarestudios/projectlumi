@@ -16,6 +16,7 @@ import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions
+import com.google.firebase.firestore.FirebaseFirestore
 import io.github.sceneview.ar.ARSceneView
 // import io.github.sceneview.node.ModelNode
 // import io.github.sceneview.math.Position
@@ -36,6 +37,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,6 +73,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        testFirestore()
+
         arSceneView = findViewById(R.id.arSceneView)
         statusText = findViewById(R.id.statusText)
         poseOverlay = findViewById(R.id.poseOverlay)
@@ -92,6 +96,39 @@ class MainActivity : AppCompatActivity() {
 
         // Load product from intent AFTER setupUI so gownOverlay is ready
         loadProductFromIntent()
+
+        val db = FirebaseFirestore.getInstance()
+
+        val test = hashMapOf(
+            "message" to "Firebase works!",
+            "time" to System.currentTimeMillis()
+        )
+
+        db.collection("test")
+            .add(test)
+            .addOnSuccessListener {
+                Log.d("FIREBASE_TEST", "Document added!")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FIREBASE_TEST", "Error", e)
+            }
+    }
+
+    private fun testFirestore() {
+        val db = FirebaseFirestore.getInstance()
+        val user = hashMapOf(
+            "name" to "Rui",
+            "age" to 21
+        )
+
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener {
+                Log.d("FIREBASE", "Document saved!")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FIREBASE", "Error", e)
+            }
     }
 
     private fun loadProductFromIntent() {

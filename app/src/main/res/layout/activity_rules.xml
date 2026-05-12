@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F0EB">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F5F0EB"
+        app:elevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp">
+
+            <ImageButton
+                android:id="@+id/rulesBackButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="#2C1810"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rules &amp; Regulations"
+                android:textSize="18sp"
+                android:fontFamily="@font/cormorant_garamond"
+                android:textStyle="bold"
+                android:textColor="#2C1810"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0D5C8" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="32dp">
+
+            <!-- Rental Agreement -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rental Agreement"
+                android:textSize="17sp"
+                android:fontFamily="@font/cormorant_garamond"
+                android:textStyle="bold"
+                android:textColor="#2C1810"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Return Policy: All items must be returned on or before the return date. Late returns will incur additional charges of ₱500 per day."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Item Condition: Items must be returned in the same condition as received. Any damage or stains will be charged to the renter."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Security Deposit: A security deposit of 50% of the rental price is required and will be refunded upon successful return."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. Cancellation Policy: Cancellations must be made 48 hours before the rental date for a full refund."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5. Rental Responsibility: The renter is fully responsible for the item during the rental period."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6. Cleaning Services: Dry cleaning is included in the rental price. No need to clean items before return."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7. Alterations: Alterations are available for an additional fee. Please request at least 3 days before your event."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8. Subleasing: Items cannot be subleased or lent to other parties under any circumstances."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9. Identification: A valid government-issued ID is required for all rentals."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10. Payment Terms: Full payment including deposit must be made before item pickup or delivery."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Damage & Loss Policy -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Damage &amp; Loss Policy"
+                android:textSize="17sp"
+                android:fontFamily="@font/cormorant_garamond"
+                android:textStyle="bold"
+                android:textColor="#2C1810"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="In case of damage or loss, charges will be assessed based on the extent of damage and repair costs."
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minor damages (small tears, missing buttons): ₱500–₱2,000"
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Major damages (large tears, stains, structural damage): ₱3,000–₱10,000"
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loss or irreparable damage: Full replacement value of the item"
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Contact Information -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Information"
+                android:textSize="17sp"
+                android:fontFamily="@font/cormorant_garamond"
+                android:textStyle="bold"
+                android:textColor="#2C1810"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="For inquiries, concerns, or assistance with your rental, please reach us through the following:"
+                android:textSize="13sp"
+                android:textColor="#4A3828"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email: hello@lumi.ph\nPhone: +63 917 123 4567\nHours: Mon–Sat, 9AM–6PM"
+                android:textSize="13sp"
+                android:textColor="#7A6652"
+                android:lineSpacingExtra="4dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
