@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "429612664602",
+    "project_id": "project-lumi-b4c7e",
+    "storage_bucket": "project-lumi-b4c7e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429612664602:android:cdf0a7023b790a85b10ea3",
+        "android_client_info": {
+          "package_name": "com.brahmware.lumi_alpha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN4tGzsy5029ASWoQA7TjExpnztTraL74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
