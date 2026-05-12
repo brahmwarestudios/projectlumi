@@ -4,36 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F0EB">
 
     <!-- Top bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F5F0EB"
         app:elevation="0dp">
 
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:paddingHorizontal="20dp"
-            android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Shopping Cart"
-                android:textSize="22sp"
-                android:fontFamily="@font/cormorant_garamond"
-                android:textStyle="bold"
-                android:textColor="#2C1810" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0D5C8" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,40 +26,16 @@
         android:orientation="vertical"
         android:gravity="center"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginBottom="56dp">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_cart"
-            android:tint="#C8B89A"
-            android:alpha="0.8" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your cart is empty"
-            android:textSize="15sp"
-            android:fontFamily="@font/cormorant_garamond"
-            android:textColor="#9E8E85"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/continueShoppingBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="Continue Shopping"
-            android:textSize="14sp"
-            android:paddingHorizontal="32dp"
-            app:backgroundTint="#7A6652"
-            android:textColor="#FFFFFF"
-            app:cornerRadius="8dp" />
 
     </LinearLayout>
 
-    <!-- Content with items -->
     <LinearLayout
         android:id="@+id/cartContentView"
         android:layout_width="match_parent"
@@ -100,13 +57,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="#F5F0EB">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0D5C8"
-                android:layout_marginBottom="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,18 +69,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/cormorant_garamond"
-                    android:textColor="#2C1810" />
 
                 <TextView
                     android:id="@+id/cartTotalText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/cormorant_garamond"
-                    android:textStyle="bold"
-                    android:textColor="#7A6652" />
 
             </LinearLayout>
 
@@ -140,25 +83,8 @@
                 android:layout_height="52dp"
                 android:text="Proceed to Checkout"
                 android:textSize="15sp"
-                app:backgroundTint="#7A6652"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="8dp" />
 
         </LinearLayout>
-
     </LinearLayout>
-
-    <!-- Bottom navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavCart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#F5F0EB"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="#2C1810"
-        app:itemTextColor="#2C1810"
-        app:labelVisibilityMode="labeled"
-        app:elevation="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

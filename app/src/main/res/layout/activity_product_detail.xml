@@ -4,368 +4,185 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F0EB">
-
-    <!-- Top bar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F5F0EB"
-        app:elevation="0dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:paddingHorizontal="16dp">
-
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_back"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="#2C1810"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Product Details"
-                android:textSize="16sp"
-                android:fontFamily="@font/cormorant_garamond"
-                android:textStyle="bold"
-                android:textColor="#2C1810"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <ImageButton
-                android:id="@+id/cartIconButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_cart"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="#2C1810"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    android:background="@color/lumiBackground">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:paddingBottom="100dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hero image with dots indicator -->
+            <!-- Product Image -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="260dp">
+                android:layout_height="360dp"
+                android:background="@drawable/hero_banner_background">
 
                 <ImageView
                     android:id="@+id/productDetailImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerInside"
+                    android:padding="24dp" />
 
-                <!-- Dot indicators (static, 4 dots) -->
-                <LinearLayout
+                <!-- Back button -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/backButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
+                    android:layout_margin="16dp"
+                    android:src="@android:drawable/ic_media_previous"
+                    android:contentDescription="Back"
+                    app:backgroundTint="#881A0533"
+                    app:tint="#FFFFFF"
+                    app:fabSize="mini" />
 
-                    <View android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_margin="3dp" android:background="@drawable/dot_active" />
-                    <View android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_margin="3dp" android:background="@drawable/dot_inactive" />
-                    <View android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_margin="3dp" android:background="@drawable/dot_inactive" />
-                    <View android:layout_width="8dp" android:layout_height="8dp"
-                        android:layout_margin="3dp" android:background="@drawable/dot_inactive" />
-
-                </LinearLayout>
             </FrameLayout>
 
-            <!-- Thumbnail row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp">
-
-                <ImageView
-                    android:id="@+id/thumb1"
-                    android:layout_width="64dp"
-                    android:layout_height="72dp"
-                    android:layout_marginEnd="8dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/thumb_selected" />
-
-                <ImageView
-                    android:id="@+id/thumb2"
-                    android:layout_width="64dp"
-                    android:layout_height="72dp"
-                    android:layout_marginEnd="8dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/thumb_unselected" />
-
-                <ImageView
-                    android:id="@+id/thumb3"
-                    android:layout_width="64dp"
-                    android:layout_height="72dp"
-                    android:layout_marginEnd="8dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/thumb_unselected" />
-
-                <ImageView
-                    android:id="@+id/thumb4"
-                    android:layout_width="64dp"
-                    android:layout_height="72dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/thumb_unselected" />
-
-            </LinearLayout>
-
-            <!-- Content -->
+            <!-- Product Info -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                android:padding="20dp">
 
-                <!-- Product name -->
+                <!-- Brand -->
+                <TextView
+                    android:id="@+id/productDetailBrand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/lumiSecondary"
+                    android:textSize="13sp"
+                    android:letterSpacing="0.1" />
+
+                <!-- Name -->
                 <TextView
                     android:id="@+id/productDetailName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
                     android:textSize="24sp"
-                    android:fontFamily="@font/cormorant_garamond"
                     android:textStyle="bold"
-                    android:textColor="#2C1810"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Rent / Buy toggle -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/toggle_background"
-                    android:layout_marginBottom="16dp">
-
-                    <Button
-                        android:id="@+id/toggleRent"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Rent"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/toggle_active"
-                        android:textSize="14sp" />
-
-                    <Button
-                        android:id="@+id/toggleBuy"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Buy"
-                        android:textColor="#7A6652"
-                        android:background="@android:color/transparent"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
+                    android:layout_marginTop="4dp" />
 
                 <!-- Price -->
                 <TextView
                     android:id="@+id/productDetailPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/lumiTertiary"
                     android:textSize="20sp"
-                    android:fontFamily="@font/cormorant_garamond"
                     android:textStyle="bold"
-                    android:textColor="#7A6652"
-                    android:layout_marginBottom="6dp" />
+                    android:layout_marginTop="8dp" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#222244"
+                    android:layout_marginVertical="16dp" />
+
+                <!-- Description Label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textColor="@color/lumiSecondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.1" />
 
                 <!-- Description -->
                 <TextView
                     android:id="@+id/productDetailDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
-                    android:textColor="#7A6652"
-                    android:lineSpacingExtra="3dp"
-                    android:layout_marginBottom="20dp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="14sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:layout_marginTop="8dp" />
 
-                <!-- Select Size label -->
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#222244"
+                    android:layout_marginVertical="16dp" />
+
+                <!-- Quantity -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select Size"
+                    android:text="Quantity"
+                    android:textColor="@color/lumiSecondary"
                     android:textSize="13sp"
-                    android:textColor="#2C1810"
-                    android:fontFamily="@font/cormorant_garamond"
-                    android:layout_marginBottom="10dp" />
+                    android:textStyle="bold" />
 
-                <!-- Size chips row -->
                 <LinearLayout
-                    android:id="@+id/sizeContainer"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
 
-                <!-- Rental Period -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rental Period"
-                    android:textSize="13sp"
-                    android:textColor="#2C1810"
-                    android:fontFamily="@font/cormorant_garamond"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/decreaseQty"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="-"
+                        android:textSize="18sp"
+                        android:padding="0dp"
+                        app:backgroundTint="#2D1052"
+                        app:cornerRadius="8dp" />
 
-                <!-- Rent Date -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rent Date"
-                    android:textSize="12sp"
-                    android:textColor="#2C1810"
-                    android:layout_marginBottom="6dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/rentDateLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:startIconDrawable="@drawable/ic_calendar"
-                    app:boxBackgroundColor="#F5F0EB"
-                    app:boxStrokeColor="#C8B89A"
-                    app:boxCornerRadiusTopStart="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusBottomEnd="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rentDateField"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/quantityText"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
-                        android:hint="mm/dd/yyyy"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:inputType="none" />
+                        android:text="1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/increaseQty"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:text="+"
+                        android:textSize="18sp"
+                        android:padding="0dp"
+                        app:backgroundTint="#7C3AED"
+                        app:cornerRadius="8dp" />
 
-                <!-- Return Date -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Return Date (Max 7 days)"
-                    android:textSize="12sp"
-                    android:textColor="#2C1810"
-                    android:layout_marginBottom="6dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/returnDateLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:startIconDrawable="@drawable/ic_calendar"
-                    app:boxBackgroundColor="#F5F0EB"
-                    app:boxStrokeColor="#C8B89A"
-                    app:boxCornerRadiusTopStart="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusBottomEnd="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/returnDateField"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="mm/dd/yyyy"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Extended rental checkbox -->
-                <CheckBox
-                    android:id="@+id/extendedRentalCheck"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="I need extended rental (more than 7 days)"
-                    android:textSize="13sp"
-                    android:textColor="#7A6652"
-                    android:buttonTint="#7A6652"
-                    android:layout_marginBottom="24dp" />
-
-                <!-- Wishlist -->
-                <ImageButton
-                    android:id="@+id/wishlistButton"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_heart_outline"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:tint="#7A6652"
-                    android:layout_marginBottom="12dp"
-                    android:visibility="gone" />
-
-                <!-- Try On with AR button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/previewButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:text="✦  Try On with AR"
-                    android:textSize="15sp"
-                    app:backgroundTint="#7A6652"
-                    android:textColor="#FFFFFF"
-                    app:cornerRadius="8dp"
-                    android:layout_marginBottom="10dp" />
-
-                <!-- Add to Cart -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/addToCartButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="Add to Cart"
-                    android:textSize="14sp"
-                    app:strokeColor="#7A6652"
-                    android:textColor="#7A6652"
-                    app:cornerRadius="8dp"
-                    android:layout_marginBottom="24dp" />
+                </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <!-- Preview Button pinned at bottom -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/previewButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_gravity="bottom"
-        android:background="#F5F0EB"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="#2C1810"
-        app:itemTextColor="#2C1810"
-        app:labelVisibilityMode="labeled"
-        app:elevation="8dp" />
+        android:layout_margin="16dp"
+        android:text="✨ Preview Product"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#7C3AED"
+        app:cornerRadius="28dp"
+        app:icon="@android:drawable/ic_menu_camera"
+        app:iconTint="#FFFFFF"
+        app:iconGravity="textStart" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
