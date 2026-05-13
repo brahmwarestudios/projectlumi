@@ -4,87 +4,138 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F0EB">
 
     <!-- Top bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/lumi_background"
         app:elevation="0dp">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/cartToolbar"
             android:layout_width="match_parent"
-
-            <TextView
-                android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            app:title="My Cart"
+            app:titleTextColor="@color/lumi_on_surface" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Empty state -->
-    <LinearLayout
-        android:id="@+id/cartEmptyView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-
-        <ImageView
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your cart is empty"
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/cartContentView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_marginBottom="56dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:clipToPadding="false" />
-
-        <!-- Footer -->
+        <!-- Empty state -->
         <LinearLayout
+            android:id="@+id/cartEmptyView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="24dp">
 
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/baseline_shopping_cart_24"
+                android:alpha="0.3"
+                android:layout_marginBottom="16dp"
+                app:tint="@color/lumi_on_surface" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your cart is empty"
+                android:textSize="18sp"
+                android:textColor="@color/lumi_on_surface_variant"
+                android:layout_marginBottom="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/continueShoppingBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue Shopping"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:textColor="@color/lumi_secondary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cartContentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cartRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:clipToPadding="false" />
+
+            <!-- Footer -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="#F5F0EB"
+                android:elevation="8dp">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Total"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:id="@+id/cartTotalText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total"
+                        android:textColor="@color/lumi_on_surface_variant"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/cartTotalText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$0.00"
+                        android:textColor="@color/lumi_on_surface"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/checkoutButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Proceed to Checkout"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="@color/lumi_primary"
+                    android:textColor="@color/lumi_on_primary" />
 
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/checkoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:text="Proceed to Checkout"
-                android:textSize="15sp"
-
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@color/lumi_surface"
+        app:itemIconTint="@color/lumi_on_surface_variant"
+        app:itemTextColor="@color/lumi_on_surface_variant"
+        app:itemRippleColor="@color/lumi_secondary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

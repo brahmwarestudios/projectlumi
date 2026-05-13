@@ -6,11 +6,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 
-class AccountActivity : AppCompatActivity() {
+class AccountActivity : BaseActivity() {
 
     data class FaqItem(val question: String, val answer: String)
 
@@ -37,33 +36,37 @@ class AccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
+        // Populate user info from session
+        val session = SessionManager.getSession(this)
+        if (session != null) {
+            findViewById<TextView>(R.id.accountUserName).text = session.name
+            findViewById<TextView>(R.id.accountMemberType).text =
+                if (session.role == SessionManager.Role.ADMIN) "Administrator" else "Premium Member"
+        }
+
         setupFaqs()
         setupButtons()
         setupBottomNav()
     }
 
     private fun setupFaqs() {
-        val faqViews = listOf(
-            R.id.faq1, R.id.faq2, R.id.faq3, R.id.faq4
-        )
+        val faqViewIds = listOf(R.id.faq1, R.id.faq2, R.id.faq3, R.id.faq4)
+        faqViewIds.forEachIndexed { index, viewId ->
+            val faqView    = findViewById<LinearLayout>(viewId)
+            val faq        = faqs[index]
+            val questionTv = faqView.findViewById<TextView>(R.id.faqQuestion)
+            val answerTv   = faqView.findViewById<TextView>(R.id.faqAnswer)
+            val chevron    = faqView.findViewById<ImageView>(R.id.faqChevron)
+            val row        = faqView.findViewById<LinearLayout>(R.id.faqQuestionRow)
 
-        faqViews.forEachIndexed { index, viewId ->
-            val faqView = findViewById<LinearLayout>(viewId)
-            val faq = faqs[index]
+            questionTv.text = faq.question
+            answerTv.text   = faq.answer
 
-            val questionText = faqView.findViewById<TextView>(R.id.faqQuestion)
-            val answerText   = faqView.findViewById<TextView>(R.id.faqAnswer)
-            val chevron      = faqView.findViewById<ImageView>(R.id.faqChevron)
-            val questionRow  = faqView.findViewById<LinearLayout>(R.id.faqQuestionRow)
-
-            questionText.text = faq.question
-            answerText.text   = faq.answer
-
-            questionRow.setOnClickListener {
-                val isExpanded = answerText.visibility == View.VISIBLE
-                answerText.visibility = if (isExpanded) View.GONE else View.VISIBLE
+            row.setOnClickListener {
+                val expanded = answerTv.visibility == View.VISIBLE
+                answerTv.visibility = if (expanded) View.GONE else View.VISIBLE
                 chevron.setImageResource(
-                    if (isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up
+                    if (expanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_up
                 )
             }
         }
@@ -71,14 +74,17 @@ class AccountActivity : AppCompatActivity() {
 
     private fun setupButtons() {
         findViewById<LinearLayout>(R.id.rulesRow).setOnClickListener {
-            startActivity(Intent(this, RulesActivity::class.java))
+            navigateTo(Intent(this, RulesActivity::class.java))
         }
 
         findViewById<MaterialButton>(R.id.logoutButton).setOnClickListener {
-            // Will hook into Supabase auth later — for now go to home
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            SessionManager.clearSession(this)
+            // Clear the entire back stack and go to login
+            val intent = Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             finish()
         }
     }
@@ -89,12 +95,19 @@ class AccountActivity : AppCompatActivity() {
         nav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    // Go back to existing HomeActivity on the stack — don't create a new one
+                    val intent = Intent(this, HomeActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
                     startActivity(intent)
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                    finish()
                     true
                 }
-                R.id.nav_cart    -> { startActivity(Intent(this, CartActivity::class.java)); false }
+                R.id.nav_cart -> {
+                    navigateTo(Intent(this, CartActivity::class.java))
+                    false
+                }
                 R.id.nav_account -> true
                 else -> false
             }

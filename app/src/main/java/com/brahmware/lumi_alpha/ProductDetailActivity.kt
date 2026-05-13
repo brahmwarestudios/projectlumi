@@ -44,8 +44,8 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun bindViews() {
         findViewById<ImageView>(R.id.productDetailImage).setImageResource(product.imageRes)
         // Thumbnails — all show same image for now
-        listOf(R.id.thumb1, R.id.thumb2, R.id.thumb3, R.id.thumb4).forEach {
-            findViewById<ImageView>(it).setImageResource(product.imageRes)
+        listOf<Int>(R.id.thumb1, R.id.thumb2, R.id.thumb3, R.id.thumb4).forEach { id ->
+            findViewById<ImageView>(id).setImageResource(product.imageRes)
         }
         findViewById<TextView>(R.id.productDetailName).text = product.name
         findViewById<TextView>(R.id.productDetailPrice).text = product.formattedPrice
@@ -133,7 +133,7 @@ class ProductDetailActivity : AppCompatActivity() {
         returnField.setOnClickListener { showDatePicker { date ->
             val maxDays = if (extendedCheck.isChecked) 30L else 7L
             if (pickupDate != null && date.isAfter(pickupDate!!.plusDays(maxDays))) {
-                Toast.makeText(this, "Max ${maxDays} days rental period", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Max $maxDays days rental period", Toast.LENGTH_SHORT).show()
                 return@showDatePicker
             }
             returnDate = date

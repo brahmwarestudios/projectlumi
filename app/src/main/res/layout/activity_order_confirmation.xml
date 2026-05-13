@@ -7,13 +7,13 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="32dp"
-    android:background="@color/lumi_background">
+    android:background="#F5F0EB">
 
     <ImageView
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:src="@drawable/ic_check_circle"
-        app:tint="@color/lumi_primary"
+        app:tint="#9E8E85"
         android:layout_marginBottom="24dp" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Booking Confirmed!"
         android:textSize="26sp"
-        android:textColor="@color/lumi_on_surface"
+        android:textColor="#9E8E85"
         android:layout_marginBottom="8dp" />
 
     <TextView
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:text="We'll contact you to confirm pick-up details."
         android:textSize="12sp"
-        android:textColor="@color/lumi_on_surface_variant"
+        android:textColor="#9E8E85"
         android:gravity="center"
         android:layout_marginBottom="40dp" />
 
@@ -65,7 +65,7 @@
         android:text="Browse More Items"
         android:textSize="15sp"
         app:backgroundTint="@color/lumi_primary"
-        android:textColor="@color/lumi_on_primary"
+        android:textColor="#9E8E85"
         app:cornerRadius="26dp" />
 
 </LinearLayout>

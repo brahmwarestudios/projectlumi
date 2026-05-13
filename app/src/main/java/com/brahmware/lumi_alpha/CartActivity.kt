@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 
-class CartActivity : AppCompatActivity() {
+class CartActivity : BaseActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CartAdapter
@@ -38,9 +37,18 @@ class CartActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adapter
 
-        findViewById<MaterialButton>(R.id.continueShoppingBtn).setOnClickListener { finish() }
+        findViewById<MaterialButton>(R.id.continueShoppingBtn).setOnClickListener {
+            // Go back to existing Home, don't create a new one
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            finish()
+        }
+
         findViewById<MaterialButton>(R.id.checkoutButton).setOnClickListener {
-            startActivity(Intent(this, CheckoutActivity::class.java))
+            navigateTo(Intent(this, CheckoutActivity::class.java))
         }
 
         setupBottomNav()
@@ -62,9 +70,17 @@ class CartActivity : AppCompatActivity() {
         nav.selectedItemId = R.id.nav_cart
         nav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home    -> { finish(); true }
+                R.id.nav_home -> {
+                    val intent = Intent(this, HomeActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                    finish()
+                    true
+                }
                 R.id.nav_cart    -> true
-                R.id.nav_account -> { startActivity(Intent(this, AccountActivity::class.java)); false }
+                R.id.nav_account -> { navigateTo(Intent(this, AccountActivity::class.java)); false }
                 else -> false
             }
         }

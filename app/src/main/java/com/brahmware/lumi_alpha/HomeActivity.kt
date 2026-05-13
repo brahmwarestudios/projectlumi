@@ -3,12 +3,11 @@ package com.brahmware.lumi_alpha
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
@@ -21,18 +20,24 @@ class HomeActivity : AppCompatActivity() {
         setupCollectionTiles()
         setupBottomNavigation()
         setupSearch()
-        showDisclaimerDialog()
+
+        // Only show disclaimer once per app install
+        val prefs = getSharedPreferences("lumi_prefs", MODE_PRIVATE)
+        val shown = prefs.getBoolean("disclaimer_shown", false)
+        if (!shown) {
+            showDisclaimerDialog()
+            prefs.edit().putBoolean("disclaimer_shown", true).apply()
+        }
     }
 
     private fun setupRecyclerView() {
         recyclerView = findViewById(R.id.productsRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.isNestedScrollingEnabled = false
-
         adapter = ProductAdapter(ProductRepository.getAll()) { product ->
-            val intent = Intent(this, ProductDetailActivity::class.java)
-            intent.putExtra("product", product)
-            startActivity(intent)
+            navigateTo(Intent(this, ProductDetailActivity::class.java).apply {
+                putExtra("product", product)
+            })
         }
         recyclerView.adapter = adapter
     }
@@ -51,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupSearch() {
         findViewById<View>(R.id.searchButton).setOnClickListener {
-            // Wire up SearchActivity in a future step
+            // Wire up SearchActivity later
         }
     }
 
@@ -61,15 +66,15 @@ class HomeActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home    -> true
-                R.id.nav_cart    -> { startActivity(Intent(this, CartActivity::class.java)); false }
-                R.id.nav_account -> { startActivity(Intent(this, AccountActivity::class.java)); false }
+                R.id.nav_cart    -> { navigateTo(Intent(this, CartActivity::class.java)); false }
+                R.id.nav_account -> { navigateTo(Intent(this, AccountActivity::class.java)); false }
                 else -> false
             }
         }
     }
 
     private fun showDisclaimerDialog() {
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this, R.style.LumiDialog)
             .setTitle("Project Lumi — Alpha")
             .setMessage("This app is a prototype currently in development.\n\nThank you for testing Project Lumi!")
             .setPositiveButton("Got it") { d, _ -> d.dismiss() }

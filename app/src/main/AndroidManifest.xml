@@ -57,8 +57,9 @@
         <activity android:name=".OrderConfirmationActivity" android:exported="false" />
         <activity android:name=".AccountActivity" />
         <activity android:name=".RulesActivity" />
-
-
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".AdminDashboardActivity" />
 
     </application>
 
