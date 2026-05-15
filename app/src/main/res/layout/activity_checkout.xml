@@ -4,43 +4,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F0EB">
+    android:background="#F5F0EB"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F5F0EB"
+        android:fitsSystemWindows="true"
         app:elevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp">
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/checkoutBackButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="#2C1810"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="12dp"
-                app:srcCompat="@drawable/ic_back"
-                app:fabSize="mini"
-                app:backgroundTint="@color/lumi_surface_variant"
-                app:tint="@color/lumi_on_surface" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Checkout"
+                android:textSize="16sp"
+                android:fontFamily="@font/cormorant_garamond"
+                android:textStyle="bold"
+                android:textColor="#2C1810"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="Checkout"
-                android:textSize="18sp"
-                android:textColor="@color/lumi_on_surface" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0D5C8" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -59,9 +68,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/lumi_surface"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp"
+                app:strokeColor="#E0D5C8"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,8 +84,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Order Summary"
-                        android:textSize="14sp"
-                        android:textColor="#9E8E85"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/cormorant_garamond"
+                        android:textStyle="bold"
+                        android:textColor="#7A6652"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
@@ -82,14 +95,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:textColor="@color/lumi_on_surface"
+                        android:textColor="#2C1810"
                         android:lineSpacingExtra="4dp"
                         android:layout_marginBottom="12dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/lumi_surface_variant"
+                        android:background="#E0D5C8"
                         android:layout_marginBottom="12dp" />
 
                     <LinearLayout
@@ -103,14 +116,16 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="13sp"
-                            android:textColor="@color/lumi_on_surface_variant" />
+                            android:textColor="#9E8E85" />
 
                         <TextView
                             android:id="@+id/checkoutTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="18sp"
-                            android:textColor="@color/lumi_primary" />
+                            android:fontFamily="@font/cormorant_garamond"
+                            android:textStyle="bold"
+                            android:textColor="#7A6652" />
 
                     </LinearLayout>
 
@@ -122,9 +137,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="@color/lumi_surface"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp"
+                app:strokeColor="#E0D5C8"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -136,8 +153,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Shipping Details"
-                        android:textSize="14sp"
-                        android:textColor="#9E8E85"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/cormorant_garamond"
+                        android:textStyle="bold"
+                        android:textColor="#7A6652"
                         android:layout_marginBottom="12dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -146,15 +165,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Full Name"
-                        android:layout_marginBottom="12dp">
-
+                        android:layout_marginBottom="12dp"
+                        app:boxBackgroundColor="#FFFFFF"
+                        app:boxStrokeColor="#C8B89A"
+                        app:hintTextColor="#9E8E85"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusBottomEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/fieldFullName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="#2C1810"
                             android:inputType="textPersonName"
                             android:imeOptions="actionNext" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -163,15 +188,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Phone Number"
-                        android:layout_marginBottom="12dp">
-
+                        android:layout_marginBottom="12dp"
+                        app:boxBackgroundColor="#FFFFFF"
+                        app:boxStrokeColor="#C8B89A"
+                        app:hintTextColor="#9E8E85"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusBottomEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/fieldPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="#2C1810"
                             android:inputType="phone"
                             android:imeOptions="actionNext" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -180,15 +211,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Street Address"
-                        android:layout_marginBottom="12dp">
-
+                        android:layout_marginBottom="12dp"
+                        app:boxBackgroundColor="#FFFFFF"
+                        app:boxStrokeColor="#C8B89A"
+                        app:hintTextColor="#9E8E85"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusBottomEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/fieldAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="#2C1810"
                             android:inputType="textPostalAddress"
                             android:imeOptions="actionNext" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -196,15 +233,21 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="City / Municipality">
-
+                        android:hint="City / Municipality"
+                        app:boxBackgroundColor="#FFFFFF"
+                        app:boxStrokeColor="#C8B89A"
+                        app:hintTextColor="#9E8E85"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusBottomEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/fieldCity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="#2C1810"
                             android:inputType="textCapWords"
                             android:imeOptions="actionDone" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -216,8 +259,8 @@
                 android:layout_height="52dp"
                 android:text="Place Order"
                 android:textSize="15sp"
-                app:backgroundTint="@color/lumi_primary"
-                android:textColor="@color/lumi_on_primary"
+                app:backgroundTint="#7A6652"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="26dp" />
 
         </LinearLayout>

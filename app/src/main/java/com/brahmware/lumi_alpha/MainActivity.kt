@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope // Added for Coroutines
 import com.google.ar.core.Config
 import com.google.ar.core.Frame
 // import com.google.ar.core.Pose
@@ -35,6 +36,17 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+
+// Supabase Imports
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.postgrest.from
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -64,6 +76,18 @@ class MainActivity : AppCompatActivity() {
     private var stableFrameCount = 0
     private val requiredStableFrames = 5 // must be consistent for 5 frames before updating
 
+    // ==========================================
+    // SUPABASE CLIENT INITIALIZATION
+    // Replace with your actual URL and Anon Key
+    // ==========================================
+    private val supabase = createSupabaseClient(
+        supabaseUrl = "https://silehvdtdyrvyqfajlaf.supabase.co",
+        supabaseKey = "sb_publishable_ogW5Xsm1SsfaQzH47jD7hg_u2HfdKNu"
+    ) {
+        install(Postgrest)
+        install(Auth)
+    }
+
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
         private const val TAG = "ProjectLumi"
@@ -74,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         testFirestore()
+        testSupabaseConnection() // <-- Added Supabase connection test
 
         arSceneView = findViewById(R.id.arSceneView)
         statusText = findViewById(R.id.statusText)
@@ -129,6 +154,27 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.e("FIREBASE", "Error", e)
             }
+    }
+
+    // ==========================================
+    // SUPABASE CONNECTION TEST FUNCTION
+    // ==========================================
+    private fun testSupabaseConnection() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val session = supabase.auth.currentSessionOrNull()
+                // If this line runs, the SDK is linked!
+                withContext(Dispatchers.Main) {
+                    android.widget.Toast.makeText(this@MainActivity, "Supabase Linked!", android.widget.Toast.LENGTH_LONG).show()
+                    Log.d("SUPABASE_CHECK", "Success")
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    android.widget.Toast.makeText(this@MainActivity, "Supabase Error: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                    Log.e("SUPABASE_CHECK", "Failed", e)
+                }
+            }
+        }
     }
 
     private fun loadProductFromIntent() {
@@ -229,16 +275,16 @@ class MainActivity : AppCompatActivity() {
         if (isFrontCamera) {
             arSceneView.visibility = View.GONE
             frontCameraPreview.visibility = View.VISIBLE
-            gownOverlay.setFrontCamera(true)   // ← add this
-            poseOverlay.setFrontCamera(true)   // ← add this
+            gownOverlay.setFrontCamera(true)
+            poseOverlay.setFrontCamera(true)
             startFrontCamera()
             updateStatus("Front camera active")
         } else {
             stopFrontCamera()
             frontCameraPreview.visibility = View.GONE
             arSceneView.visibility = View.VISIBLE
-            gownOverlay.setFrontCamera(false)  // ← add this
-            poseOverlay.setFrontCamera(false)  // ← add this
+            gownOverlay.setFrontCamera(false)
+            poseOverlay.setFrontCamera(false)
             updateStatus("Rear camera active")
         }
     }
@@ -423,7 +469,6 @@ class MainActivity : AppCompatActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        // Setup gown selector
         // Setup gown selector
         val container = findViewById<LinearLayout>(R.id.gownSelectorLayout)
 

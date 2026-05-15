@@ -20,15 +20,17 @@ class CartActivity : BaseActivity() {
     private lateinit var totalText: TextView
     private lateinit var emptyView: View
     private lateinit var contentView: View
+    private lateinit var itemCountBadge: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
-        recyclerView  = findViewById(R.id.cartRecyclerView)
-        totalText     = findViewById(R.id.cartTotalText)
-        emptyView     = findViewById(R.id.cartEmptyView)
-        contentView   = findViewById(R.id.cartContentView)
+        recyclerView   = findViewById(R.id.cartRecyclerView)
+        totalText      = findViewById(R.id.cartTotalText)
+        emptyView      = findViewById(R.id.cartEmptyView)
+        contentView    = findViewById(R.id.cartContentView)
+        itemCountBadge = findViewById(R.id.cartItemCountBadge)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = CartAdapter { productId ->
@@ -38,7 +40,6 @@ class CartActivity : BaseActivity() {
         recyclerView.adapter = adapter
 
         findViewById<MaterialButton>(R.id.continueShoppingBtn).setOnClickListener {
-            // Go back to existing Home, don't create a new one
             val intent = Intent(this, HomeActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
@@ -63,6 +64,9 @@ class CartActivity : BaseActivity() {
         val empty = CartManager.isEmpty()
         emptyView.visibility   = if (empty) View.VISIBLE else View.GONE
         contentView.visibility = if (empty) View.GONE    else View.VISIBLE
+
+        val count = CartManager.totalCount
+        itemCountBadge.text = if (count == 0) "" else "$count item${if (count != 1) "s" else ""}"
     }
 
     private fun setupBottomNav() {

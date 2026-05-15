@@ -12,27 +12,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F5F0EB"
+        android:fitsSystemWindows="true"
         app:elevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="60dp"
             android:paddingHorizontal="20dp">
 
-            <!-- Lumi script logo -->
             <TextView
                 android:id="@+id/logoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lumi"
-                android:textSize="32sp"
+                android:textSize="36sp"
                 android:fontFamily="@font/great_vibes"
                 android:textColor="#2C1810"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- Search icon -->
+            <!-- Wishlist icon -->
+            <ImageButton
+                android:id="@+id/wishlistButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_heart_outline"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="#2C1810"
+                android:contentDescription="Wishlist"
+                app:layout_constraintEnd_toStartOf="@id/searchButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
             <ImageButton
                 android:id="@+id/searchButton"
                 android:layout_width="40dp"
@@ -40,14 +52,21 @@
                 android:src="@drawable/ic_search"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:tint="#2C1810"
+                android:contentDescription="Search"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Subtle bottom divider that appears on scroll -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0D5C8" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,75 +78,90 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hero banner -->
+            <!-- Hero banner — full-bleed with rounded bottom corners -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="300dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="28dp"
+                android:clipToOutline="true"
+                android:background="@drawable/hero_rounded_background">
 
                 <ImageView
                     android:id="@+id/heroBannerImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/lumi_gown_2"
-                    android:background="#D4A5A0" />
+                    android:src="@drawable/lumi_gown_2" />
 
-                <!-- Dark gradient overlay -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/hero_gradient_overlay" />
 
-                <!-- Hero text -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="24dp">
 
+                    <!-- Eyebrow label -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SPRING COLLECTION"
                         android:textSize="10sp"
-                        android:letterSpacing="0.18"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginBottom="4dp" />
+                        android:letterSpacing="0.22"
+                        android:textColor="#CCFFFFFF"
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ethereal Romance"
-                        android:textSize="26sp"
+                        android:textSize="30sp"
                         android:fontFamily="@font/great_vibes"
                         android:textColor="#FFFFFF"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="8dp" />
 
-                    <TextView
+                    <!-- CTA pill button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/heroCta"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Discover our curated selection"
-                        android:textSize="12sp"
-                        android:textColor="#CCFFFFFF" />
+                        android:layout_height="36dp"
+                        android:text="Explore Now"
+                        android:textSize="11sp"
+                        android:textColor="#2C1810"
+                        android:letterSpacing="0.04"
+                        app:backgroundTint="#F5F0EB"
+                        app:cornerRadius="18dp" />
 
                 </LinearLayout>
 
             </FrameLayout>
 
-            <!-- Collections section -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Collections section header -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Collections"
-                android:textSize="20sp"
-                android:fontFamily="@font/cormorant_garamond"
-                android:textStyle="bold"
-                android:textColor="#2C1810"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="16dp" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Collections"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/cormorant_garamond"
+                    android:textStyle="bold"
+                    android:textColor="#2C1810" />
+
+            </LinearLayout>
 
             <!-- Collections horizontal row -->
             <LinearLayout
@@ -135,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingHorizontal="20dp"
-                android:layout_marginBottom="32dp">
+                android:layout_marginBottom="36dp">
 
                 <!-- Gowns -->
                 <LinearLayout
@@ -144,14 +178,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="100dp"
-                        android:layout_height="120dp"
-                        app:cardCornerRadius="60dp"
-                        app:cardElevation="4dp"
-                        app:shapeAppearanceOverlay="@style/OvalShape">
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        app:cardCornerRadius="42dp"
+                        app:cardElevation="3dp"
+                        app:strokeColor="#E0D5C8"
+                        app:strokeWidth="1dp">
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -165,7 +202,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gowns"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/cormorant_garamond"
+                        android:textStyle="bold"
                         android:textColor="#2C1810"
                         android:layout_marginTop="8dp" />
 
@@ -178,14 +217,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="100dp"
-                        android:layout_height="120dp"
-                        app:cardCornerRadius="60dp"
-                        app:cardElevation="4dp"
-                        app:shapeAppearanceOverlay="@style/OvalShape">
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        app:cardCornerRadius="42dp"
+                        app:cardElevation="3dp"
+                        app:strokeColor="#E0D5C8"
+                        app:strokeWidth="1dp">
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -199,7 +241,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Suits"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/cormorant_garamond"
+                        android:textStyle="bold"
                         android:textColor="#2C1810"
                         android:layout_marginTop="8dp" />
 
@@ -212,14 +256,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="100dp"
-                        android:layout_height="120dp"
-                        app:cardCornerRadius="60dp"
-                        app:cardElevation="4dp"
-                        app:shapeAppearanceOverlay="@style/OvalShape">
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        app:cardCornerRadius="42dp"
+                        app:cardElevation="3dp"
+                        app:strokeColor="#E0D5C8"
+                        app:strokeWidth="1dp">
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -233,7 +280,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Accessories"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/cormorant_garamond"
+                        android:textStyle="bold"
                         android:textColor="#2C1810"
                         android:layout_marginTop="8dp" />
 
@@ -241,32 +290,50 @@
 
             </LinearLayout>
 
-            <!-- New Arrivals section -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- New Arrivals header with "See All" -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Arrivals"
-                android:textSize="20sp"
-                android:fontFamily="@font/cormorant_garamond"
-                android:textStyle="bold"
-                android:textColor="#2C1810"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="12dp" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
-            <!-- Product grid — non-scrolling, inside NestedScrollView -->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="New Arrivals"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/cormorant_garamond"
+                    android:textStyle="bold"
+                    android:textColor="#2C1810" />
+
+                <TextView
+                    android:id="@+id/seeAllButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="See All"
+                    android:textSize="12sp"
+                    android:textColor="#7A6652"
+                    android:letterSpacing="0.04"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
+
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:paddingHorizontal="12dp"
-                android:paddingBottom="16dp"
+                android:paddingBottom="24dp"
                 android:clipToPadding="false" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"

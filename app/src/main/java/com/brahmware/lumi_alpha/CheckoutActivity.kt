@@ -2,14 +2,13 @@ package com.brahmware.lumi_alpha
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class CheckoutActivity : AppCompatActivity() {
+class CheckoutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +27,9 @@ class CheckoutActivity : AppCompatActivity() {
             "$count item${if (count != 1) "s" else ""}"
         findViewById<TextView>(R.id.checkoutTotal).text = CartManager.formattedTotal()
 
-        findViewById<FloatingActionButton>(R.id.checkoutBackButton).setOnClickListener { finish() }
+        // Back button is now ImageButton
+        findViewById<ImageButton>(R.id.checkoutBackButton).setOnClickListener { navigateBack() }
 
-        // Fields
         val nameField    = findViewById<TextInputEditText>(R.id.fieldFullName)
         val addressField = findViewById<TextInputEditText>(R.id.fieldAddress)
         val cityField    = findViewById<TextInputEditText>(R.id.fieldCity)
@@ -49,7 +48,7 @@ class CheckoutActivity : AppCompatActivity() {
             if (phoneField.text.isNullOrBlank())    { phoneLayout.error   = "Required"; valid = false } else phoneLayout.error   = null
 
             if (valid) {
-                val total    = CartManager.formattedTotal()
+                val total     = CartManager.formattedTotal()
                 val itemCount = CartManager.totalCount
                 CartManager.clear()
 
@@ -58,8 +57,7 @@ class CheckoutActivity : AppCompatActivity() {
                 intent.putExtra("order_name", nameField.text.toString())
                 intent.putExtra("order_address", "${addressField.text}, ${cityField.text}")
                 intent.putExtra("order_count", itemCount)
-                startActivity(intent)
-                finish()
+                navigateTo(intent, finishCurrent = true)
             }
         }
     }

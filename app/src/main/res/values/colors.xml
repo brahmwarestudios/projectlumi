@@ -2,22 +2,38 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Error -->
     <color name="lumi_error">#B00020</color>
 
-    <!-- Snake case (used in layouts) -->
-    <color name="lumi_primary">#7C3AED</color>
+    <!-- Core brand palette — warm cream theme -->
+    <color name="lumi_primary">#7A6652</color>
     <color name="lumi_on_primary">#FFFFFF</color>
-    <color name="lumi_secondary">#C084FC</color>
-    <color name="lumi_on_secondary">#1A0533</color>
-    <color name="lumi_tertiary">#F0ABFC</color>
-    <color name="lumi_surface">#1A0533</color>
-    <color name="lumi_on_surface">#FFFFFF</color>
-    <color name="lumi_background">#0F0020</color>
-    <color name="lumi_splash">#F5F5F5</color>
-    <color name="lumi_surface_variant">#2D1B4E</color>
-    <color name="lumi_on_surface_variant">#B0A4C8</color>
+    <color name="lumi_secondary">#C8B89A</color>
+    <color name="lumi_on_secondary">#2C1810</color>
+    <color name="lumi_tertiary">#9E8E85</color>
 
-    <!-- Camel case (used in themes) -->
+    <!-- Surfaces -->
+    <color name="lumi_background">#F5F0EB</color>
+    <color name="lumi_surface">#FFFFFF</color>
+    <color name="lumi_surface_variant">#EDE8E3</color>
+
+    <!-- Text on surfaces -->
+    <color name="lumi_on_surface">#2C1810</color>
+    <color name="lumi_on_surface_variant">#9E8E85</color>
+    <color name="lumi_on_background">#2C1810</color>
+
+    <!-- Dividers / strokes -->
+    <color name="lumi_divider">#E0D5C8</color>
+
+    <!-- Named aliases for convenience -->
+    <color name="lumi_cream">#F5F0EB</color>
+    <color name="lumi_dark_brown">#2C1810</color>
+    <color name="lumi_warm_brown">#7A6652</color>
+    <color name="lumi_muted_brown">#9E8E85</color>
+    <color name="lumi_light_brown">#C8B89A</color>
+
+    <!-- Camel-case aliases (used in some older layouts) -->
     <color name="lumiPrimary">@color/lumi_primary</color>
     <color name="lumiOnPrimary">@color/lumi_on_primary</color>
     <color name="lumiSecondary">@color/lumi_secondary</color>
@@ -26,10 +42,5 @@
     <color name="lumiSurface">@color/lumi_surface</color>
     <color name="lumiOnSurface">@color/lumi_on_surface</color>
     <color name="lumiBackground">@color/lumi_background</color>
-    <color name="lumiSplash">@color/lumi_splash</color>
-
-    <color name="lumi_cream">#F5F0EB</color>
-    <color name="lumi_dark_brown">#2C1810</color>
-    <color name="lumi_warm_brown">#8B6355</color>
-    <color name="lumi_muted_brown">#9E8E85</color>
+    <color name="lumiSplash">@color/lumi_background</color>
 </resources>

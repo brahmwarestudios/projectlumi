@@ -3,9 +3,12 @@ package com.brahmware.lumi_alpha
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 
 class HomeActivity : BaseActivity() {
 
@@ -18,13 +21,11 @@ class HomeActivity : BaseActivity() {
 
         setupRecyclerView()
         setupCollectionTiles()
+        setupToolbar()
         setupBottomNavigation()
-        setupSearch()
 
-        // Only show disclaimer once per app install
         val prefs = getSharedPreferences("lumi_prefs", MODE_PRIVATE)
-        val shown = prefs.getBoolean("disclaimer_shown", false)
-        if (!shown) {
+        if (!prefs.getBoolean("disclaimer_shown", false)) {
             showDisclaimerDialog()
             prefs.edit().putBoolean("disclaimer_shown", true).apply()
         }
@@ -52,11 +53,25 @@ class HomeActivity : BaseActivity() {
         findViewById<View>(R.id.collectionAccessories).setOnClickListener {
             adapter.updateProducts(ProductRepository.getByCategory(GownSelector.ItemType.NECKLACE))
         }
+        // "See All" resets the filter
+        findViewById<TextView>(R.id.seeAllButton).setOnClickListener {
+            adapter.updateProducts(ProductRepository.getAll())
+        }
     }
 
-    private fun setupSearch() {
-        findViewById<View>(R.id.searchButton).setOnClickListener {
-            // Wire up SearchActivity later
+    private fun setupToolbar() {
+        // Search button (wired up when SearchActivity is ready)
+        findViewById<ImageButton>(R.id.searchButton).setOnClickListener {
+            // TODO: navigate to SearchActivity
+        }
+        // Wishlist shortcut in toolbar
+        findViewById<ImageButton>(R.id.wishlistButton).setOnClickListener {
+            navigateTo(Intent(this, WishlistActivity::class.java))
+        }
+        // Hero CTA resets to full catalogue and scrolls to grid
+        findViewById<MaterialButton>(R.id.heroCta).setOnClickListener {
+            adapter.updateProducts(ProductRepository.getAll())
+            recyclerView.smoothScrollToPosition(0)
         }
     }
 

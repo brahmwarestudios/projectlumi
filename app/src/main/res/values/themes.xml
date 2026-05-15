@@ -2,44 +2,46 @@
 <resources>
 
     <!-- Base application theme -->
-    <style name="Theme.LumiAlpha" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.ProjectLumi" parent="Theme.MaterialComponents.Light.NoActionBar">
 
         <!-- Brand colors -->
-        <item name="colorPrimary">#7A6652</item>
+        <item name="colorPrimary">@color/lumi_primary</item>
         <item name="colorPrimaryVariant">#5C4D3C</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorOnPrimary">@color/lumi_on_primary</item>
 
-        <item name="colorSecondary">#C8B89A</item>
+        <item name="colorSecondary">@color/lumi_secondary</item>
         <item name="colorSecondaryVariant">#A89880</item>
-        <item name="colorOnSecondary">#2C1810</item>
+        <item name="colorOnSecondary">@color/lumi_on_secondary</item>
 
         <!-- Backgrounds -->
-        <item name="android:colorBackground">#F5F0EB</item>
-        <item name="colorSurface">#FFFFFF</item>
-        <item name="colorOnBackground">#2C1810</item>
-        <item name="colorOnSurface">#2C1810</item>
+        <item name="android:colorBackground">@color/lumi_background</item>
+        <item name="colorSurface">@color/lumi_surface</item>
+        <item name="colorOnBackground">@color/lumi_on_background</item>
+        <item name="colorOnSurface">@color/lumi_on_surface</item>
 
         <!-- Error -->
-        <item name="colorError">#B00020</item>
-        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorError">@color/lumi_error</item>
+        <item name="colorOnError">@color/white</item>
 
         <!-- Status bar matches cream background -->
-        <item name="android:statusBarColor">#F5F0EB</item>
+        <item name="android:statusBarColor">@color/lumi_background</item>
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- Navigation bar -->
-        <item name="android:navigationBarColor">#F5F0EB</item>
+        <item name="android:navigationBarColor">@color/lumi_background</item>
 
         <!-- Window background -->
-        <item name="android:windowBackground">#F5F0EB</item>
+        <item name="android:windowBackground">@color/lumi_background</item>
 
         <!-- Page transition animations -->
         <item name="android:windowActivityTransitions">true</item>
 
         <!-- TextInputLayout outline color -->
-        <item name="colorControlActivated">#7A6652</item>
-        <item name="colorControlHighlight">#C8B89A</item>
+        <item name="colorControlActivated">@color/lumi_primary</item>
+        <item name="colorControlHighlight">@color/lumi_secondary</item>
 
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+        <item name="android:windowExitTransition">@android:transition/fade</item>
     </style>
 
     <!-- Oval shape for collection thumbnails -->
@@ -50,19 +52,21 @@
 
     <!-- Dialog style -->
     <style name="LumiDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="colorPrimary">#7A6652</item>
-        <item name="android:colorBackground">#F5F0EB</item>
-        <item name="colorOnSurface">#2C1810</item>
+        <item name="colorPrimary">@color/lumi_primary</item>
+        <item name="android:colorBackground">@color/lumi_background</item>
+        <item name="colorOnSurface">@color/lumi_on_surface</item>
     </style>
 
     <!-- Splash screen theme (no action bar, cream bg) -->
-    <style name="Theme.LumiAlpha.Splash" parent="Theme.LumiAlpha">
-        <item name="android:windowBackground">#F5F0EB</item>
+    <style name="SplashScreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/lumi_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- Login theme -->
-    <style name="Theme.LumiAlpha.Login" parent="Theme.LumiAlpha">
-        <item name="android:windowBackground">#F5F0EB</item>
+    <style name="Theme.ProjectLumi.Login" parent="Theme.ProjectLumi">
+        <item name="android:windowBackground">@color/lumi_background</item>
     </style>
 
 </resources>

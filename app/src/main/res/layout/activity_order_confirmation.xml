@@ -65,7 +65,7 @@
         android:text="Browse More Items"
         android:textSize="15sp"
         app:backgroundTint="@color/lumi_primary"
-        android:textColor="#9E8E85"
+        android:textColor="#FFFFFF"
         app:cornerRadius="26dp" />
 
 </LinearLayout>

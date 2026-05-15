@@ -22,7 +22,7 @@
             android:layout_height="36dp"
             android:src="@drawable/ic_back"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="#2C1810"
+            app:tint="#2C1810"
             android:layout_marginBottom="24dp" />
 
         <!-- Title -->
